@@ -1,0 +1,55 @@
+---
+- name: resolve platform specific vars
+  include_vars: '{{ item }}'
+  with_first_found:
+    - files:
+        - '{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml'
+        - '{{ ansible_distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
+      skip: true
+      paths:
+        - '{{ role_path }}/vars'
+- name: check for install at {{ krew_install_exe }}
+  stat:
+    path: '{{ krew_install_exe }}'
+  register: krew_binary
+  changed_when: false
+- when: not krew_binary.stat.exists
+  block:
+    - name: downloading {{ krew_url }} to {{ krew_tmp_tgz }}
+      become: true
+      become_user: root
+      get_url:
+        url: '{{ krew_url }}'
+        dest: '{{ krew_tmp_tgz }}'
+        checksum: '{{ krew_checksum }}'
+        mode: 0644
+    - name: mkdir -p {{ krew_install_dir }}
+      become: true
+      become_user: root
+      file:
+        path: '{{ krew_install_dir }}'
+        state: directory
+        mode: 0755
+    - name: unarchive {{ krew_tmp_tgz }} to {{ krew_install_dir }}
+      become: true
+      become_user: root
+      unarchive:
+        remote_src: true
+        src: '{{ krew_tmp_tgz }}'
+        dest: '{{ krew_install_dir }}'
+        creates: '{{ krew_install_exe }}'
+  always:
+    - name: rm -f {{ krew_tmp_tgz }}
+      become: true
+      become_user: root
+      file:
+        path: '{{ krew_tmp_tgz }}'
+        state: absent
+- name: linking {{ krew_link }} to {{ krew_install_exe }}
+  become: true
+  become_user: root
+  file:
+    src: '{{ krew_install_exe }}'
+    dest: '{{ krew_link }}'
+    state: link

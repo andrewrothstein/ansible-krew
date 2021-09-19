@@ -1,0 +1,10 @@
+---
+# defaults file for krew
+krew_mirror: https://github.com/kubernetes-sigs/krew/releases/download
+krew_ver: 0.4.1
+krew_os: linux
+krew_arch: amd64
+krew_parent_install_dir: /usr/local
+krew_checksums:
+  # https://github.com/kubernetes-sigs/krew/releases/download/v0.4.1/krew.tar.gz.sha256
+  '0.4.1': sha256:a26deea175f70264260d59a4e061778a892f8a8e301ac261660dd7d24c551c99
