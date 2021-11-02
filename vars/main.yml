@@ -1,9 +1,11 @@
 ---
 # vars file for krew
-krew_url: '{{ krew_mirror }}/v{{ krew_ver }}/krew.tar.gz'
-krew_tmp_tgz: /tmp/krew-{{ krew_ver }}.tar.gz'
-krew_checksum: '{{ krew_checksums[krew_ver] }}'
 krew_platform: '{{ krew_os }}_{{ krew_arch }}'
+krew_name: krew-{{ krew_platform }}
+krew_tgz: '{{ krew_name }}-{{ krew_ver }}.tar.gz'
+krew_url: '{{ krew_mirror }}/v{{ krew_ver }}/{{ krew_name }}.tar.gz'
+krew_tmp_tgz: /tmp/{{ krew_tgz }}
+krew_checksum: '{{ krew_checksums[krew_ver][krew_platform] }}'
 krew_install_dir: '{{ krew_parent_install_dir }}/krew-{{ krew_ver }}'
 krew_install_exe: '{{ krew_install_dir }}/krew-{{ krew_platform }}{{ krew_dotexe | default("") }}'
 krew_link: '{{ krew_parent_install_dir }}/bin/krew{{ krew_dotexe | default("") }}'
