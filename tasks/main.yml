@@ -39,6 +39,8 @@
         src: '{{ krew_tmp_tgz }}'
         dest: '{{ krew_install_dir }}'
         creates: '{{ krew_install_exe }}'
+    - name: '{{ krew_install_exe }} install krew'
+      command: '{{ krew_install_exe }} install krew'
   always:
     - name: rm -f {{ krew_tmp_tgz }}
       become: true
@@ -53,3 +55,15 @@
     src: '{{ krew_install_exe }}'
     dest: '{{ krew_link }}'
     state: link
+- name: add kubectl plugins to the login shell PATH
+  become: true
+  become_user: root
+  with_items:
+    - f: kubectl-plugins.sh
+      d: /etc/profile.d
+  template:
+    src: '{{ item.f }}.j2'
+    dest: '{{ item.d }}/{{ item.f }}'
+    mode: '{{ item.m | default("0644") }}'
+- name: kubectl krew update
+  command: sh -l -c kubectl krew update
