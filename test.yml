@@ -1,5 +1,8 @@
 ---
 - hosts: all
+  vars:
+    krew_install_plugins:
+      - minio
   roles:
     - role: '{{ playbook_dir }}'
   tasks:
@@ -8,3 +11,10 @@
     - name: krew version
       debug:
         msg: '{{ krew_test_output.stdout }}'
+    - command: sh -l -c 'kubectl krew list'
+      register: krew_list_output
+    - name: kubectl krew list
+      debug:
+        msg: |+
+          {{ krew_list_output.stdout }}
+          {{ krew_list_output.stderr }}

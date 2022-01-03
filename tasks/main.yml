@@ -65,5 +65,10 @@
     src: '{{ item.f }}.j2'
     dest: '{{ item.d }}/{{ item.f }}'
     mode: '{{ item.m | default("0644") }}'
-- name: kubectl krew update
-  command: sh -l -c kubectl krew update
+- when: krew_install_plugins is defined
+  block:
+    - name: kubectl krew update
+      command: sh -l -c kubectl krew update
+    - name: kubectl krew install plugins
+      with_items: '{{ krew_install_plugins }}'
+      command: sh -l -c kubectl krew install {{ item }}

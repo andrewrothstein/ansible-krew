@@ -6,6 +6,9 @@ krew_os: linux
 krew_arch: amd64
 krew_parent_install_dir: /usr/local
 
+#krew_install_plugins:
+#  - minio
+
 krew_checksums:
   '0.4.2':
     # https://github.com/kubernetes-sigs/krew/releases/download/v0.4.2/krew-darwin_amd64.tar.gz.sha256
