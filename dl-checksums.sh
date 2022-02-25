@@ -26,4 +26,4 @@ dl() {
     dlver $ver windows amd64
 }
 
-dl ${1:-0.4.2}
+dl ${1:-0.4.3}
