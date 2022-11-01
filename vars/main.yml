@@ -1,5 +1,7 @@
 ---
 # vars file for krew
+krew_os: '{{ ansible_system | lower }}'
+krew_arch: '{{ krew_arch_map[ansible_architecture] }}'
 krew_platform: '{{ krew_os }}_{{ krew_arch }}'
 krew_name: krew-{{ krew_platform }}
 krew_tgz: '{{ krew_name }}-{{ krew_ver }}.tar.gz'

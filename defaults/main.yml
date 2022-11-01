@@ -2,12 +2,14 @@
 # defaults file for krew
 krew_mirror: https://github.com/kubernetes-sigs/krew/releases/download
 krew_ver: 0.4.3
-krew_os: linux
-krew_arch: amd64
+krew_arch_map:
+  aarch64: arm64
+  arm64: arm64
+  x86_64: amd64
 krew_parent_install_dir: /usr/local
 
-#krew_install_plugins:
-#  - minio
+##krew_install_plugins:
+##  - minio
 
 krew_checksums:
   '0.4.2':

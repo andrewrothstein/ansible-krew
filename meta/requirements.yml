@@ -1,7 +1,7 @@
 ---
-- role: andrewrothstein.unarchive-deps
+- name: andrewrothstein.unarchive-deps
+  version: v1.2.4
+- name: andrewrothstein.git
+  version: v3.2.2
+- name: andrewrothstein.kubectl
   version: v1.2.3
-- role: andrewrothstein.git
-  version: v3.1.6
-- role: andrewrothstein.kubectl
-  version: v1.1.73

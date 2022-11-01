@@ -1,4 +1,10 @@
 ---
+- include_role:
+    name: andrewrothstein.unarchive-deps
+- include_role:
+    name: andrewrothstein.git
+- include_role:
+    name: andrewrothstein.kubectl
 - name: resolve platform specific vars
   include_vars: '{{ item }}'
   with_first_found:
@@ -68,7 +74,7 @@
 - when: krew_install_plugins is defined
   block:
     - name: kubectl krew update
-      command: sh -l -c kubectl krew update
+      command: sh -lc "kubectl krew update"
     - name: kubectl krew install plugins
+      command: sh -lc "kubectl krew install {{ item }}"
       with_items: '{{ krew_install_plugins }}'
-      command: sh -l -c kubectl krew install {{ item }}
