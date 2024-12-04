@@ -1,7 +1,7 @@
 ---
-- name: andrewrothstein.unarchive-deps
-  version: v1.2.4
+- name: andrewrothstein.unarchivedeps
+  version: 3.0.3
 - name: andrewrothstein.git
-  version: v3.2.3
+  version: v3.2.11
 - name: andrewrothstein.kubectl
-  version: v1.2.9
+  version: v1.4.1
