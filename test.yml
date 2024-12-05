@@ -1,20 +1,25 @@
 ---
-- hosts: all
+- name: Testing andrewrothstein.krew
+  hosts: all
   vars:
     krew_install_plugins:
       - minio
   roles:
     - role: '{{ playbook_dir }}'
   tasks:
-    - command: /usr/local/bin/krew version
+    - name: Krew version
+      ansible.builtin.command: /usr/local/bin/krew version
+      changed_when: false
       register: krew_test_output
-    - name: krew version
-      debug:
+    - name: Krew version
+      ansible.builtin.debug:
         msg: '{{ krew_test_output.stdout }}'
-    - command: sh -l -c 'kubectl krew list'
+    - name: Kubectl krew list
+      ansible.builtin.command: sh -lc 'kubectl krew list'
+      changed_when: false
       register: krew_list_output
-    - name: kubectl krew list
-      debug:
+    - name: Kubectl krew list
+      ansible.builtin.debug:
         msg: |+
           {{ krew_list_output.stdout }}
           {{ krew_list_output.stderr }}

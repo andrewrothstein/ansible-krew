@@ -1,12 +1,15 @@
 ---
-- include_role:
-    name: andrewrothstein.unarchive-deps
-- include_role:
+- name: Installing andrewrothstein.unarchivedeps
+  ansible.builtin.include_role:
+    name: andrewrothstein.unarchivedeps
+- name: Installing andrewrothstein.git
+  ansible.builtin.include_role:
     name: andrewrothstein.git
-- include_role:
+- name: Installing andrewrothstein.kubectl
+  ansible.builtin.include_role:
     name: andrewrothstein.kubectl
-- name: resolve platform specific vars
-  include_vars: '{{ item }}'
+- name: Resolve platform specific vars
+  ansible.builtin.include_vars: '{{ item }}'
   with_first_found:
     - files:
         - '{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml'
@@ -15,66 +18,71 @@
       skip: true
       paths:
         - '{{ role_path }}/vars'
-- name: check for install at {{ krew_install_exe }}
-  stat:
+- name: Check for install at {{ krew_install_exe }}
+  ansible.builtin.stat:
     path: '{{ krew_install_exe }}'
   register: krew_binary
   changed_when: false
-- when: not krew_binary.stat.exists
+- name: Downloading and installing krew
+  when: not krew_binary.stat.exists
   block:
-    - name: downloading {{ krew_url }} to {{ krew_tmp_tgz }}
+    - name: Downloading {{ krew_url }} to {{ krew_tmp_tgz }}
       become: true
       become_user: root
-      get_url:
+      ansible.builtin.get_url:
         url: '{{ krew_url }}'
         dest: '{{ krew_tmp_tgz }}'
         checksum: '{{ krew_checksum }}'
-        mode: 0644
-    - name: mkdir -p {{ krew_install_dir }}
+        mode: '644'
+    - name: Mkdir -p {{ krew_install_dir }}
       become: true
       become_user: root
-      file:
+      ansible.builtin.file:
         path: '{{ krew_install_dir }}'
         state: directory
-        mode: 0755
-    - name: unarchive {{ krew_tmp_tgz }} to {{ krew_install_dir }}
+        mode: '755'
+    - name: Unarchive {{ krew_tmp_tgz }} to {{ krew_install_dir }}
       become: true
       become_user: root
-      unarchive:
+      ansible.builtin.unarchive:
         remote_src: true
         src: '{{ krew_tmp_tgz }}'
         dest: '{{ krew_install_dir }}'
         creates: '{{ krew_install_exe }}'
-    - name: '{{ krew_install_exe }} install krew'
-      command: '{{ krew_install_exe }} install krew'
+    - name: Executing "{{ krew_install_exe }} install krew"
+      ansible.builtin.command: '{{ krew_install_exe }} install krew'
+      changed_when: false
   always:
-    - name: rm -f {{ krew_tmp_tgz }}
+    - name: Rm -f {{ krew_tmp_tgz }}
       become: true
       become_user: root
-      file:
+      ansible.builtin.file:
         path: '{{ krew_tmp_tgz }}'
         state: absent
-- name: linking {{ krew_link }} to {{ krew_install_exe }}
+- name: Linking {{ krew_link }} to {{ krew_install_exe }}
   become: true
   become_user: root
-  file:
+  ansible.builtin.file:
     src: '{{ krew_install_exe }}'
     dest: '{{ krew_link }}'
     state: link
-- name: add kubectl plugins to the login shell PATH
+- name: Add kubectl plugins to the login shell PATH
   become: true
   become_user: root
   with_items:
     - f: kubectl-plugins.sh
       d: /etc/profile.d
-  template:
+  ansible.builtin.template:
     src: '{{ item.f }}.j2'
     dest: '{{ item.d }}/{{ item.f }}'
-    mode: '{{ item.m | default("0644") }}'
-- when: krew_install_plugins is defined
+    mode: '{{ item.m | default("644") }}'
+- name: Installing krew plugins
+  when: krew_install_plugins is defined
   block:
-    - name: kubectl krew update
-      command: sh -lc "kubectl krew update"
-    - name: kubectl krew install plugins
-      command: sh -lc "kubectl krew install {{ item }}"
+    - name: Kubectl krew update
+      ansible.builtin.command: sh -lc "kubectl krew update"
+      changed_when: false
+    - name: Kubectl krew install plugins
+      ansible.builtin.command: sh -lc "kubectl krew install {{ item }}"
+      changed_when: false
       with_items: '{{ krew_install_plugins }}'

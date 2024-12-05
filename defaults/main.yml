@@ -1,15 +1,15 @@
 ---
 # defaults file for krew
 krew_mirror: https://github.com/kubernetes-sigs/krew/releases/download
-krew_ver: 0.4.3
+krew_ver: 0.4.4
 krew_arch_map:
   aarch64: arm64
   arm64: arm64
   x86_64: amd64
 krew_parent_install_dir: /usr/local
 
-##krew_install_plugins:
-##  - minio
+# krew_install_plugins:
+#   - minio
 
 krew_checksums:
   '0.4.2':
@@ -38,3 +38,16 @@ krew_checksums:
     linux_arm64: sha256:0994923848882ad0d4825d5af1dc227687a10a02688f785709b03549dd34d71d
     # https://github.com/kubernetes-sigs/krew/releases/download/v0.4.3/krew-windows_amd64.tar.gz.sha256
     windows_amd64: sha256:d1343a366a867e9de60b23cc3d8ee935ee185af25ff8f717a5e696ba3cae7c85
+  '0.4.4':
+    # https://github.com/kubernetes-sigs/krew/releases/download/v0.4.4/krew-darwin_amd64.tar.gz.sha256
+    darwin_amd64: sha256:5f4d2f34868a87cf1188212cf7cb598e76a32f389054089aad1fa46e6daf1e1b
+    # https://github.com/kubernetes-sigs/krew/releases/download/v0.4.4/krew-darwin_arm64.tar.gz.sha256
+    darwin_arm64: sha256:e6ac776140b228d6bdfda11247baf4e9b11068f42005d0975fc260c629954464
+    # https://github.com/kubernetes-sigs/krew/releases/download/v0.4.4/krew-linux_amd64.tar.gz.sha256
+    linux_amd64: sha256:e471396b0ed4f2be092b4854cc030dfcbb12b86197972e7bef0cb89ad9c72477
+    # https://github.com/kubernetes-sigs/krew/releases/download/v0.4.4/krew-linux_arm.tar.gz.sha256
+    linux_arm: sha256:4f3d550227e014f3ba7c72031108ffda0654cb755f70eb96be413a5102d23333
+    # https://github.com/kubernetes-sigs/krew/releases/download/v0.4.4/krew-linux_arm64.tar.gz.sha256
+    linux_arm64: sha256:f8f0cdbf698ed3e8cb46e7bd213754701341a10e11ccb69c90d4863e0cf5a16a
+    # https://github.com/kubernetes-sigs/krew/releases/download/v0.4.4/krew-windows_amd64.tar.gz.sha256
+    windows_amd64: sha256:da0dfeb2a598f11fb9ce871ee7f3b1a69beb371a45f531ee65a71b2201511d28
